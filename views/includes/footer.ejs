@@ -1,0 +1,91 @@
+<!-- Sticky Footer -->
+            <footer class="sticky-footer <%= typeof footerClass == "undefined" ? '' : footerClass %>">
+               <div class="container">
+                  <div class="row no-gutters">
+                     
+                  </div>
+               </div>
+            </footer>
+            
+         </div>
+         <!-- /.content-wrapper -->
+      </div>
+      <!-- /#wrapper -->
+      <!-- Scroll to Top Button-->
+      <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+      </a>
+      <!-- Logout Modal-->
+      <div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                  </button>
+               </div>
+               <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+               <div class="modal-footer">
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                  <a class="btn btn-primary" href="/logout">Logout</a>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Bootstrap core JavaScript-->
+
+      <style>
+         .fixed-bottom {
+ 
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-image: url("public/img/footerimg.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+ 
+            z-index: 1;
+            opacity:4;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            font-size: 20px;
+         }
+      </style>
+
+      <% if (url != "/pro-version") { %>
+         <div class="footer fixed-bottom">
+
+            <div>Copyright reseverd ©2020 </div>
+            
+         </div>
+      <% } %>
+      
+      <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- Core plugin JavaScript-->
+      <script src="/public/vendor/jquery-easing/jquery.easing.min.js"></script>
+      <!-- Owl Carousel -->
+      <script src="/public/vendor/owl-carousel/owl.carousel.js"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="/public/js/custom.js?v=1"></script>
+
+      <script type="text/javascript" src="/public/js/macOSNotif.min.js"></script>
+      <script type="text/javascript" src="/public/js/socket.io.js"></script>
+      <script src="/public/js/x0popup.min.js"></script>
+      <script src="/public/js/videojs-ie8.min.js"></script>
+      <script src="/public/js/video.js"></script>
+
+      <script src="/public/js/alertify.min.js"></script>
+
+      <script type="text/javascript">
+         window.onerror = function (message, file, line) {
+            console.log(message + " in " + file + " at line " + line);
+         };
+
+         var io = io(mainURL);
+      </script>
+   </body>
+
+</html>

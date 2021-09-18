@@ -1,0 +1,157 @@
+<%- include ("includes/header") %>
+
+    <% if (isMyChannel) { %>
+        <style>
+            .text {
+                overflow-wrap: break-word;
+            }
+        </style>
+
+        <script>
+
+            function enterSocialMediaLink(node) {
+                var name = node.getAttribute("class");
+                var dataText = node.getAttribute("data-text");
+                var dataPlatform = node.getAttribute("data-platform");
+                var link = node.getAttribute("data-link");
+
+                x0popup({
+                    // title
+                    title: dataText,
+                    // custom text
+                    text: null,
+                    // text, input, ok, warning, info, error
+                    type: 'input',
+                    // enable animation
+                    animation: false,
+                    // input color
+                    inputColor: "#000000",
+                    // Default value in the input.
+                    inputValue: link,
+                }, function(button, text) {
+                    if(button == 'info') {
+                        func();
+                    }
+                });
+            }
+        </script>
+    <% } %>
+
+	<script>
+		function openTab(tabName) {
+			var x = document.getElementsByClassName("tab");
+			for (var i = 0; i < x.length; i++) {
+				x[i].style.display = "none";
+			}
+			document.getElementById(tabName).style.display = "block";
+
+			var lis = document.getElementById("navbarSupportedContent").querySelectorAll(".nav-item");
+			for (var a = 0; a < lis.length; a++) {
+				lis[a].setAttribute("class", "nav-item");
+			}
+			document.querySelector("a[href='#" + tabName + "']").parentElement.setAttribute("class", "nav-item active");
+		}
+	</script>
+
+            <div class="single-channel-image">
+               <img class="img-fluid" style="height: 386px; object-fit: cover;" alt="" src="<%= user.coverImage %>" onclick="func();" onerror="this.src = '/public/img/channel-banner.jpg'">
+               <div class="channel-profile">
+                  <img class="channel-profile-img" onclick="func();" style="object-fit: cover;" alt="" src="<%= user.image %>" onerror="this.src = '/public/img/user_placeholder.jpg'">
+                  
+               </div>
+            </div>
+            <div class="single-channel-nav">
+               <nav class="navbar navbar-expand-lg navbar-light">
+                  <a class="channel-brand" href="javascript:void(0);"><%= user.first_name + " " + user.last_name %> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                           <a class="nav-link" href="#videos" onclick="openTab('videos');">Videos</a>
+                        </li>
+                     </ul>
+
+                  </div>
+               </nav>
+            </div>
+
+			<div class="container-fluid">
+				<div class="video-block section-padding">
+					<div class="row">
+						<div class="col-md-12">
+                            <% if (message != "") { %>
+                                <div class="alert alert-success">
+                                    <%= message %>
+                                </div>
+                            <% } %>
+                        </div>
+					</div>
+				</div>
+			</div>
+
+            <div class="container-fluid tab" id="videos">
+               <div class="video-block section-padding">
+                  <div class="row" id="videos-section">
+
+	                     <% if (user.videos) { user.videos = user.videos.reverse(); %>
+
+							 <% user.videos.forEach (function (video) { %>
+			                        <div class="col-xl-3 col-sm-6 mb-3">
+			                           <div class="video-card">
+			                              <div class="video-card-image">
+			                                 <a class="play-icon" href="watch?v=<%= video.watch %>"><i class="fas fa-play-circle"></i></a>
+			                                 <a href="watch?v=<%= video.watch %>">
+			                                 	<img src="<%= video.thumbnail %>" class="thumbnail" style="width: 266px; height: 167px;">
+			                                 </a>
+			                                 <div class="time"><%= video.minutes + ":" + video.seconds %></div>
+			                              </div>
+			                              <div class="video-card-body">
+			                                 <div class="video-title">
+			                                    <a href="/watch?v=<%= video.watch %>"><%= video.title %></a>
+												<% if (isMyChannel) { %>
+													<a href="/edit?v=<%= video.watch %>" style="float: right;"><i class="fa fa-edit text-info"></i></a>
+												<% } %>
+			                                 </div>
+			                                 <div class="video-page text-success">
+			                                    <a class="text-success" title="<%= video.category %>" data-placement="top" data-toggle="tooltip" href="category_search?c=<%= video.category %>" data-original-title="Verified">
+			                                       <%= video.category %> <i class="fas fa-check-circle text-success"></i>
+			                                    </a>
+			                                 </div>
+			                                 <div class="video-view">
+			                                    <%= video.views %> views &nbsp;<i class="fas fa-calendar-alt"></i> <%
+			                                       var createdAt = new Date(video.createdAt);
+			                                       var date = createdAt.getDate() + "";
+			                                    %>
+			                                       <%= date.padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear() %>
+			                                 </div>
+			                              </div>
+			                           </div>
+			                        </div>
+	                     		<% }) %>
+						<% } %>
+
+                  </div>
+               </div>
+            </div>
+            <!-- /.container-fluid -->
+
+	<script>
+		var videos = document.getElementById("videos-section").querySelectorAll("video");
+		for (var a = 0; a < videos.length; a++) {
+			videos[a].currentTime = 10;
+		}
+
+		var videos = document.getElementById("playlists").querySelectorAll("video");
+		for (var a = 0; a < videos.length; a++) {
+			videos[a].currentTime = 10;
+		}
+
+		function func() {
+			alertify.success("This feature is available only in premium version. Kindly read README.txt to get full version.");
+			return false;
+		}
+	</script>
+
+<%- include ("includes/footer") %>

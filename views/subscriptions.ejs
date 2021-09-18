@@ -1,0 +1,73 @@
+<%- include ("includes/header") %>
+
+   <script type="text/javascript">
+      function removeChannelFromSubscription() {
+         if (confirm("Are you sure you want to remove this from subscription ?")) {
+            var channel = document.getElementById("btn-remove-channel").getAttribute("data-channel");
+
+            var ajax = new XMLHttpRequest();
+            ajax.open("POST", "/remove-channel-from-subscription", true);
+            ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            ajax.onreadystatechange = function () {
+               if (this.readyState == 4 && this.status == 200) {
+                  var response = JSON.parse(this.responseText);
+
+                  macOSNotif({
+                     "title": response.status,
+                     "sounds": true,
+                     "subtitle": response.message,
+                     "autoDismiss": 5,
+                     "btn2Text": null
+                  });
+
+                  if (response.status == "success") {
+                     document.getElementById("container-" + channel).remove();
+                  }
+               }
+            };
+
+            ajax.send("channel=" + channel);
+         }
+      }
+   </script>
+
+            <div class="container-fluid">
+               <div class="video-block section-padding">
+                  <div class="row">
+
+                     <% if (user.subscriptions != null) {
+                           user.subscriptions.forEach (function (channel) {
+                        %>
+                           <div class="col-xl-3 col-sm-6 mb-3" id="container-<%= channel.channelId %>">
+                              <div class="channels-card">
+                                 <div class="channels-card-image">
+                                    <a href="channel?c=<%= channel.channelId %>">
+                                       <img class="img-fluid" src="<%= channel.image %>" onerror="this.src = 'public/img/user_placeholder.jpg'" alt="">
+                                    </a>
+                                    <div class="channels-card-image-btn">
+                                       <button type="button" class="btn btn-success btn-sm border-none">Subscribers
+                                          <strong><%= channel.subscribers.length %></strong>
+                                       </button>
+
+                                       <button type="button" onclick="removeChannelFromSubscription();" id="btn-remove-channel" data-channel="<%= channel.channelId %>" class="btn btn-warning btn-sm border-none">
+                                          <i class="fas fa-times-circle"></i>
+                                       </button>
+                                    </div>
+                                 </div>
+                                 <div class="channels-card-body">
+                                    <div class="channels-title">
+                                       <a href="channel?c=<%= channel.channelId %>"><%= channel.channelName %> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        <% })
+                     }%>
+
+                  </div>
+               </div>
+            </div>
+            <!-- /.container-fluid -->
+
+<%- include ("includes/footer") %>
